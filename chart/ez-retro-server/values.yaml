@@ -5,32 +5,25 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: asia-docker.pkg.dev/master-molly/info/ez-retro
   pullPolicy: IfNotPresent
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+# Configure the EZ Retro server.
+ez:
+  # Set env to "production" when in production.
+  env: ""
+  existingSecret: ""
+
+# Configure the mongodb chart dependency (See our Chart.yaml).
+mongodb: {}
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # If not set and create is true, a name is generated using the
+  # fullname template.
   name:
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -39,30 +32,21 @@ service:
 ingress:
   enabled: false
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
-      paths: []
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+    - host: ez-retro.local
+      paths:
+        - /
+  tls:
+    - secretName: ez-retro-tls
+      hosts:
+        - ez-retro.local
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
+podSecurityContext: {}
+securityContext: {}
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
