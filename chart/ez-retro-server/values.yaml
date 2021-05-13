@@ -12,6 +12,7 @@ image:
 ez:
   # Set env to "production" when in production.
   env: ""
+  debug: false
   existingSecret: ""
 
 # Configure the mongodb chart dependency (See our Chart.yaml).
